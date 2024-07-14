@@ -1,11 +1,31 @@
 import os
 import threading
+import configparser
 import tkinter as tk
 from tkinter import messagebox, filedialog, ttk
 from service.repository import clone_or_pull
-from utils.data import REPO_URL
+from utils.data import *
 
 selected_folder = None
+
+config = configparser.ConfigParser()
+
+def load_config():
+    global selected_folder
+
+    if os.path.exists(CONFIG_FILE):
+        print("Config file exists, loading...")
+        config.read(CONFIG_FILE)
+        if config.has_section(CONFIG_SECTION) and config.has_option(CONFIG_SECTION, CONFIG_KEY_FOLDER):
+            selected_folder = config.get(CONFIG_SECTION, CONFIG_KEY_FOLDER)
+            if os.path.exists(selected_folder): on_folder_selected()
+            else: selected_folder = None
+
+def save_config():
+    if not config.has_section(CONFIG_SECTION): config.add_section(CONFIG_SECTION)
+    config.set(CONFIG_SECTION, CONFIG_KEY_FOLDER, selected_folder)
+    with open(CONFIG_FILE, 'w') as config_file: config.write(config_file)
+
 
 def get_mods_folder():
     return os.path.join(selected_folder, 'mods')
@@ -32,6 +52,7 @@ def select_folder():
 
     if folder_selected:
         selected_folder = folder_selected
+        save_config()
         on_folder_selected()
 
 def on_folder_selected():
@@ -85,5 +106,6 @@ update_button.grid_remove()
 mods_listbox = tk.Listbox(root, width=50, height=10)
 mods_listbox.grid_remove()
 
-# App loop
+# Start app
+load_config()
 root.mainloop()
