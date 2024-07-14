@@ -45,8 +45,7 @@ def list_mods(mods_folder):
 
     if os.path.exists(mods_folder) and os.path.isdir(mods_folder):
         mods = [f for f in os.listdir(mods_folder) if f.endswith('.jar')]
-        for mod in mods:
-            mods_listbox.insert(tk.END, mod)
+        for mod in mods: mods_listbox.insert(tk.END, mod)
     else:
         print("No mods folder, creating it...")
         os.makedirs(mods_folder)
