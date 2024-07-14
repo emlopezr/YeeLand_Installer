@@ -1,4 +1,0 @@
-- Carpeta emotes
-- Carpeta resourcepacks
-- Carpeta mods separada
-- Carpeta shaderpacks
