@@ -2,26 +2,6 @@ import os
 import shutil
 from git import Repo
 
-def pull(repo):
-    try:
-        origin = repo.remotes.origin
-        origin.pull()
-    except Exception as e:
-        print(e)
-        raise Exception(f"Error pulling repo: {e}")
-
-
-def clone(repo_url, path):
-    try:
-        os.makedirs(path)
-        Repo.clone_from(repo_url, path)
-    except Exception as e:
-        print(e)
-        raise Exception(f"Error cloning repo: {e}")
-
-def is_repo(path):
-    return os.path.isdir(os.path.join(path, '.git'))
-
 # Main method of the program, it will clone the repo if it doesn't exist, or pull if it does
 def clone_or_pull(repo_url, path):
     if not os.path.exists(path):
@@ -36,25 +16,25 @@ def clone_or_pull(repo_url, path):
         reset_and_pull(path)
 
 def reset(path):
-    try:
-        repo = Repo(path)
-        
-        print("Repo path: ", repo.working_dir)
+    repo = Repo(path)
 
-        if repo.is_dirty(untracked_files=True):
-            print("Repo is dirty, resetting...")
-            repo.git.reset('--hard')
+    if repo.is_dirty(untracked_files=True):
+        print("Repo is dirty, resetting...")
+        repo.git.reset('--hard')
 
-        return repo
-    except Exception as e:
-        print(e)
-        raise Exception(f"Error resetting repo: {e}")
+    return repo
 
-# If local changes are present, this function will reset the repo and pull
 def reset_and_pull(path):
-    try:
-        repo = reset(path)
-        pull(repo)
-    except Exception as e:
-        print(e)
-        raise Exception(f"Error resetting and pulling repo: {e}")
+    repo = reset(path)
+    pull(repo)
+
+def clone(repo_url, path):
+    os.makedirs(path)
+    Repo.clone_from(repo_url, path)
+
+def pull(repo):
+    origin = repo.remotes.origin
+    origin.pull()
+
+def is_repo(path):
+    return os.path.isdir(os.path.join(path, '.git'))

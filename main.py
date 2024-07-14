@@ -16,7 +16,6 @@ def update_mods(mods_folder):
         list_mods(mods_folder)
         messagebox.showinfo("Finalizado", "Los mods se han actualizado correctamente.")
     except Exception as e:
-        print(e)
         messagebox.showerror("Error", f"Ha ocurrido un error al actualizar los mods: {e}")
 
 def update_mods_with_spinner(mods_folder):
@@ -47,7 +46,6 @@ def list_mods(mods_folder):
     if os.path.exists(mods_folder) and os.path.isdir(mods_folder):
         mods = [f for f in os.listdir(mods_folder) if f.endswith('.jar')]
         for mod in mods:
-            print(mod)
             mods_listbox.insert(tk.END, mod)
     else:
         print("No mods folder, creating it...")
