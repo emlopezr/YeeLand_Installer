@@ -1,4 +1,4 @@
-REPO_URL = 'https://github.com/emlopezr/YeeLand_Mods'
+REPO_URL = 'https://github.com/emlopezr/YeeLand_Content'
 
 CONFIG_FILE = 'config.ini'
 CONFIG_SECTION = 'Settings'
